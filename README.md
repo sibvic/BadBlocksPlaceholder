@@ -8,3 +8,9 @@ It accepts two parameters: the disk drive and the block size in KB (file of the 
     BadBlocksPlaceholder e:\ 1024
 
 This will run the test using 1MB files.
+
+Also, you can continue cleaning placeholder files:
+
+    BadBlocksPlaceholder clean e:\BadBlockPlaceholders\20190110
+
+This mode will test all files in the specified folder and delete the files which doesn't have any reading errors.
