@@ -7,8 +7,29 @@ namespace BadBlocksPlaceholder
     {
         static void Main(string[] args)
         {
-            var drive = new DriveInfo(args[0]);
-            int blockSize = int.Parse(args[1]) * 1024;
+            string targetDir;
+            if (args[0] == "clean")
+            {
+                if (!args[1].ToUpper().Contains("BADBLOCKPLACEHOLDERS"))
+                {
+                    Console.WriteLine("Only BadBlockPlaceholders folder is allowed to be cleaned");
+                    return;
+                }
+                targetDir = args[1];
+            }
+            else
+            {
+                var drive = new DriveInfo(args[0]);
+                int blockSize = int.Parse(args[1]) * 1024;
+                targetDir = CreateBlocks(drive, blockSize);
+            }
+
+            Validate(targetDir);
+            Console.WriteLine("Done!");
+        }
+
+        private static string CreateBlocks(DriveInfo drive, int blockSize)
+        {
             var block = new byte[blockSize];
             var bbDir = Path.Combine(drive.RootDirectory.FullName, "BadBlockPlaceholders");
             if (!Directory.Exists(bbDir))
@@ -31,7 +52,11 @@ namespace BadBlocksPlaceholder
                     filestream.Close();
                 }
             }
+            return targetDir;
+        }
 
+        private static void Validate(string targetDir)
+        {
             Console.WriteLine("Validating blocks");
             foreach (var file in Directory.GetFiles(targetDir))
             {
@@ -46,7 +71,6 @@ namespace BadBlocksPlaceholder
                 }
                 File.Delete(file);
             }
-            Console.WriteLine("Done!");
         }
     }
 }
