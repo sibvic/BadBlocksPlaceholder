@@ -1,0 +1,1 @@
+dotnet publish -c Release --self-contained -r win7-x64
