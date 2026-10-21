@@ -7,6 +7,12 @@ namespace BadBlocksPlaceholder
     {
         static void Main(string[] args)
         {
+            if (args.Length < 2)
+            {
+                PrintHelp();
+                return;
+            }
+
             string targetDir;
             if (args[0] == "clean")
             {
@@ -26,6 +32,19 @@ namespace BadBlocksPlaceholder
 
             Validate(targetDir);
             Console.WriteLine("Done!");
+        }
+
+        private static void PrintHelp()
+        {
+            Console.WriteLine("Usage:");
+            Console.WriteLine("  BadBlocksPlaceholder <drive> <block size in KB>");
+            Console.WriteLine("      Fills all free space on the drive with files of the specified size, then reads them.");
+            Console.WriteLine("      Files that read without errors are deleted, others are left in <drive>\\BadBlockPlaceholders\\yyyyMMdd.");
+            Console.WriteLine("      Example: BadBlocksPlaceholder e:\\ 1024");
+            Console.WriteLine();
+            Console.WriteLine("  BadBlocksPlaceholder clean <BadBlockPlaceholders folder>");
+            Console.WriteLine("      Re-tests files in the folder and deletes the ones without reading errors.");
+            Console.WriteLine("      Example: BadBlocksPlaceholder clean e:\\BadBlockPlaceholders\\20190110");
         }
 
         private static string CreateBlocks(DriveInfo drive, int blockSize)
